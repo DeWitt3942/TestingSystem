@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TestingSystem</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+	<style>
+		.nav li{
+			 display: inline-block; 
+			 font-size: 20px;
+			 padding: 0 20px;
+			 padding-top: 5px;
+		}
+
+		.basic{
+			color:  #4D1AE6;
+		}
+		.basicb{
+			background-color:  #4D1AE6;	
+		}
+
+		.darker{
+			color: #2D00B3
+		}
+
+		.lighter{
+			color: #4D1AE6;
+		}
+		.white{
+			color: #eeeecc;
+		}
+
+	</style>
+  <body>
+  	<div class="header">
+  		<div class="nav container">
+  			<ul class="pull-left">
+  				<li><%= link_to('Questions', questions_url) %></li>
+  				<li><%= link_to('Tests', tests_url)%></li>
+  				<li><%= link_to('Sessions', sessions_url)%></li>
+  			</ul>
+  			<ul class="pull-right">
+  			<% if !user_signed_in? %>
+  				<li> <%= link_to('Login', new_user_session_path)  %>  </li>
+  				<li>
+  <%= link_to('Register', new_user_registration_path)  %></li>
+  			<% else %>
+          <% if current_user.admin? %>
+          <li><%= link_to('RUN', '/admify')%></li>
+          <% else %>
+          <li> <%= link_to('ADM', '/admify')%></li>
+          <% end %>
+  				<li>Welcome, <%= current_user.name %> </li>
+  				<li><%= link_to('Logout', destroy_user_session_path, method: :delete) %></li>
+  			<% end %>
+  			</ul>
+  		</div>
+  	</div>
+  	<div class="container">
+    <%= yield %>
+    </div>
+  </body>
+</html>

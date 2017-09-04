@@ -1,0 +1,48 @@
+<% dis = defined? disabled %>
+<% correct = []
+	if defined? correct_ans
+		correct = correct_ans
+	end
+   
+%>
+  <span class="container">
+  		<span class="row">
+  		<span class="col-md-3"></span>
+  		<span class="col-md-3">
+  			<h4> <%= question.text %></h4>
+  		</span>
+  		<span class="col-md-3"></span>
+  			
+  		</span>
+ 	<%
+  	data = JSON.parse question.data
+	data.each_with_index do |option, index| %>
+
+	
+	<span class="row <% if correct.include? index%>correct-ans <%end%>">
+		<span class="col-md-1"></span>
+		<span class="col-md-1">
+			<% checked = false %>
+			<% if question.multi %>
+				<% if !question_data.nil? and question_data.split(",").include? index.to_s 
+						checked = true
+						end %>
+				<%= check_box_tag("ans", index, checked, disabled: dis) %>
+			<% else %>
+
+				<% if !question_data.nil? and question_data.to_i == index 
+					checked = true
+					end %>
+					
+				<%= radio_button_tag("ans", index, checked, disabled: dis) %>	
+			<% end %>		
+		</span>
+		<span class="col-md-10">
+
+			<%= label "ans_", index, option["option"]  %>
+		</span>
+	</span>
+  <% end %>	
+
+  </span>
+  

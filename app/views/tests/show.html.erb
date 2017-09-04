@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+  <h4><%= @test.name %></h4>
+
+
+<% @test.questions.each_with_index do |q, i| %>
+	<%= render "questions/challenge", question: q, question_data: nil, disabled: true, correct_ans: q.get_ans %>
+	
+	<% end%>
+<%= link_to 'Edit', edit_test_path(@test) %> |
+<%= link_to 'Back', tests_path %>

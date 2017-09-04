@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Test:</strong>
+  <%= @t_qconnection.test_id %>
+</p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @t_qconnection.question_id %>
+</p>
+
+<%= link_to 'Edit', edit_t_qconnection_path(@t_qconnection) %> |
+<%= link_to 'Back', t_qconnections_path %>

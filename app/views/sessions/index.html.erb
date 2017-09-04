@@ -1,0 +1,66 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sessions</h1>
+
+
+    <% if user_signed_in? %>
+    <h3>Your sessions:</h3>
+    <table class="table">
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Test</td>
+      <td>State</td>
+      <td></td>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% current_user.sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td>Test: <% if !session.test.nil? %>#<%= session.test_id %>, <%= session.test.name %><%end%></td>
+        <td><%= session.name_state %> </td>
+        <td><%= link_to 'Show', session %></td>
+        <% if current_user.admin? %>
+        <td><%= link_to 'Remove', session, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <% end %>
+   </tbody>
+</table>
+<% if current_user.admin? %>
+    <h4>All sessions:</h4>
+    <table class="table">
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>User</td>
+      <td>Test</td>
+      <td>State</td>
+      <td></td>
+
+    </tr>
+  </thead>
+  
+  <tbody>
+    <% @sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td><%= session.user_id %>(<%= session.user.name %>)</td>
+        <td>Test: <% if !session.test.nil? %>#<%= session.test_id %>, <%= session.test.name %><%end%></td>
+        <td><%= session.name_state %> </td>
+        <td><%= link_to 'Show', session %></td>
+        <td><%= link_to 'Remove', session, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+<% end %>
+<br>
+<% if current_user.admin? %>
+<%= link_to 'New Session', new_session_path %>
+<% end %>

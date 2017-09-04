@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+<%
+	if @session.state == 0
+
+%>
+
+
+	<h2>Welcome to the test session! Are you ready to try?</h2>
+	<a href="<%=url_for(action: 'start')%>"><div class="btn btn-success">Press me</div></a>
+<% elsif @session.state == 1 %>
+	<h2> The test is on. Question id is <%= @data["question"] + 1 %> out of <%= @session.test.questions.size %></h2>
+
+	<h4>//Now render the question</h4>
+	<%= render "questions/challenge", question: @session.test.questions[@data["question"]], question_data: @current_data %>
+	<% if @data["question"].to_i > 0 %><div class="btn btn-default" onClick="gather_and_redirect('<%=url_for(action: 'prev')%>')">Previous</div> <%end %>
+	<% if @data["question"].to_i + 1 < @session.test.questions.size %> 	<div class="btn btn-default" onClick="gather_and_redirect('<%=url_for(action: 'next')%>')">Next</div></a> <%end%> 
+	<div class="btn btn-success" onClick="gather_and_redirect('<%=url_for(action: 'finish')%>')">Finish test</div></a>
+<% else %>
+	<h2>The test if off. </h2>
+	<h4>Your score is: <%= @session.score %>%</h4>
+	<% if current_user.admin? %>
+	<a href="<%=url_for(action: 'reset')%>"><div class="btn btn-default">Restart test</div></a>
+	<% end %>
+
+	<hr>
+	<h5>Answers:</h5>
+	<% @session.test.questions.each_with_index do |q, i| %>
+	<%= render "questions/challenge", question: q, question_data: @data["answers"][i], disabled: true, correct_ans: q.get_ans %>
+	
+	<% end%>
+	 <%end%>
+</div>
+
+
+<script>
+	
+	function gather_and_redirect(url){
+		<% if @session.test.questions[@question_id].multi? %>
+			var val = [];
+			var q = $('input[name=ans]:checked');
+			for (i = 0;i<q.length;i++)
+				val.push(q[i].value);
+			val = val.toString();
+		<% else %>
+		var val = $('input[name=ans]:checked').val();
+		<% end %>
+
+		if (val != undefined)
+			url += "?ans=" + val;
+		window.location.replace(url);
+
+
+	}
+</script>
